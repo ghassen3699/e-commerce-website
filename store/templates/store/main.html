@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <title>E Commerce</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">    
+        <link href="{% static 'bootstrape/css/bootstrap.min.css'%}" rel="stylesheet">
+        <!-- Ion-Icons 4 -->
+        <link rel="stylesheet" href="{% static 'site/css/ionicons.min.css'%}">
+        <script type="text/javascript">
+            var user = '{{request.user}}'
+
+
+            function getCookie(name) {
+                var cookieValue = null ;
+                if (document.cookie && document.cookie !== ''){
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++){
+                        var cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length+1) === (name + '=')){
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            var csrftoken = getCookie('csrftoken') ;
+        </script>
+    </head>
+
+    <body>
+
+        
+        <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'store' %}">E commerce</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url "store" %}">Store</a>
+                        </li>
+                        {% if request.user.is_authenticated %}                        
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{% url "store" %}">Acount</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <div class="form-inline my-2 my-lg-0">
+                        {% if request.user.is_authenticated %}
+                            <a href="#" class="btn btn-warning">Logout</a>
+                        {% else %}
+                            <a href="#" class="btn btn-warning">Login</a>
+                        {% endif %}
+                        <a id="mini-cart-trigger" href="{% url 'cart' %}">
+                            <i class="ion ion-md-basket"></i>
+                            <span class="item-counters">{{order.total_items}}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <br><br><br>
+        <div class="container">
+            {% block content %}
+            
+            {% endblock content %}
+        </div>
+
+
+        <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+        <script src="{% static 'bootstrape/js/bootstrap.bundle.min.js'%}"></script>
+    </body>
+
+
+</html>
